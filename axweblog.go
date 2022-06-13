@@ -25,6 +25,7 @@ var indexTemplate []byte
 var maxLogChunk uint64 = 100
 var maxLogLines = 500
 var lpTTL = time.Second * 60
+var ShowLogLineNumber = false
 
 type WebLogJsonLine struct {
 	ID   uint64
@@ -185,13 +186,15 @@ func (h *WebLogWriter) handlerLPGet(w http.ResponseWriter, r *http.Request) {
 
 func (h *WebLogWriter) handleHtml(w http.ResponseWriter, r *http.Request) {
 	b, err := render(indexTemplate, struct {
-		MaxLogChunk uint64
-		MaxLogLines int
-		LpTTL       int64
+		MaxLogChunk       uint64
+		MaxLogLines       int
+		LpTTL             int64
+		ShowLogLineNumber bool
 	}{
-		MaxLogChunk: maxLogChunk,
-		MaxLogLines: maxLogLines,
-		LpTTL:       lpTTL.Milliseconds(),
+		MaxLogChunk:       maxLogChunk,
+		MaxLogLines:       maxLogLines,
+		LpTTL:             lpTTL.Milliseconds(),
+		ShowLogLineNumber: ShowLogLineNumber,
 	})
 	if err != nil {
 		w.WriteHeader(500)
