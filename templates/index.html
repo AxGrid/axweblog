@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/1.35.0/iconfont/tabler-icons.min.css" integrity="sha512-tpsEzNMLQS7w9imFSjbEOHdZav3/aObSESAL1y5jyJDoICFF2YwEdAHOPdOr1t+h8hTzar0flphxR76pd0V1zQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://bootswatch.com/5/darkly/bootstrap.min.css">
+    <link href="./static/main.css" rel="stylesheet">
+    <title>AxWebLog</title>
+</head>
+<body>
+<script type="application/javascript">
+    let mlc = {{.MaxLogChunk}}
+    let timeout = {{.LpTTL}}
+</script>
+
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark px-3 position-fixed w-100">
+    <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto me-xl-0">
+            <li class="nav-item me-4 mt-3 mt-md-0">
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <input type="checkbox" class="btn-check" id="followBtn" autocomplete="off" checked>
+                    <label class="btn btn-outline-primary btn-sm align-middle" for="followBtn"><i class="ti ti-chevrons-down"></i></label>
+                </div>
+            </li>
+            <li class="nav-item me-4 mt-3 mt-md-0">
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                  <input type="checkbox" class="btn-check" name="lineBreak" id="lineBreak" autocomplete="off">
+                  <label class="btn btn-outline-primary btn-sm" for="lineBreak">
+                      <i class="ti ti-text-wrap" id="lineBreakOnIcon"></i>
+                      <i class="ti ti-text-wrap-disabled" id="lineBreakOffIcon"></i>
+                  </label>
+
+                  <!--<input type="radio" class="btn-check" name="lineBreak" id="lineBreakOff" autocomplete="off">
+                  <label class="btn btn-outline-primary btn-sm" for="lineBreakOff"><i class="ti ti-text-wrap-disabled"></i></label>-->
+
+                </div>
+            </li>
+            <li class="nav-item me-4 mt-3 mt-md-0">
+                <div class="btn-group" role="group" aria-label="Radio toggle button group level">
+                    <input type="radio" class="btn-check" name="level" id="levelDebug" autocomplete="off">
+                  <label class="btn btn-outline-primary btn-sm" for="levelDebug">Debug</label>
+
+                  <input type="radio" class="btn-check" name="level" id="levelInfo" autocomplete="off">
+                  <label class="btn btn-outline-primary btn-sm" for="levelInfo">Info</label>
+
+                  <input type="radio" class="btn-check" name="level" id="levelWarn" autocomplete="off">
+                  <label class="btn btn-outline-primary btn-sm" for="levelWarn">Warn</label>
+
+                  <input type="radio" class="btn-check" name="level" id="levelError" autocomplete="off">
+                  <label class="btn btn-outline-primary btn-sm" for="levelError">Error</label>
+
+                </div>
+            </li>
+            <li class="nav-item me-4 mt-3 mt-md-0">
+                <button type="button" id="clearBtn" class="btn btn-primary btn-sm"><i class="ti ti-clear-formatting"></i></button>
+            </li>
+        </ul>
+         <form class="form-inline mt-3 mt-md-0 ms-auto">
+             <input class="form-control mr-sm-2" placeholder="Highlight" aria-label="Search" id="searchInput">
+         </form>
+     </div>
+</nav>
+
+<div class="container-fluid" id="container">
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+<script type="application/javascript" src="./static/index.js"></script>
+</body>
+</html>
