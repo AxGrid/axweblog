@@ -8,6 +8,10 @@
 Level(zerolog.DebugLevel).
 With().Timestamp().Logger()`
 
+Для формата даты
+
+`zerolog.TimeFieldFormat = time.RFC3339`
+
 Подключение в http
 
 `r.Handle("/log/*", webWriter)`
