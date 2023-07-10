@@ -2,6 +2,8 @@ package axweblog
 
 import (
 	"bytes"
+	"context"
+	"crypto/subtle"
 	"embed"
 	"encoding/json"
 	"fmt"
@@ -72,7 +74,7 @@ func (h *WebLogWriter) Write(p []byte) (n int, err error) {
 	return len(p), nil
 }
 
-func NewWebLogWriter(pattern string) *WebLogWriter {
+func NewWebLogWriter(pattern, login, password string) *WebLogWriter {
 	wl := &WebLogWriter{
 		lines:   []*WebLogJsonLine{},
 		router:  chi.NewRouter(),
@@ -82,6 +84,7 @@ func NewWebLogWriter(pattern string) *WebLogWriter {
 		uniq:    fmt.Sprintf("%d", time.Now().UnixMicro()),
 	}
 	wl.router.Route(pattern, func(r chi.Router) {
+		r.Use(BasicAuthSimple(login, password))
 		r.Get("/data/", wl.handlerSimpleGet)
 		r.Get("/lp/", wl.handlerLPGet)
 		r.Get("/", wl.handleHtml)
@@ -181,6 +184,36 @@ func (h *WebLogWriter) handlerLPGet(w http.ResponseWriter, r *http.Request) {
 		h.lpLock.Unlock()
 		w.WriteHeader(408)
 		break
+	}
+}
+
+func BasicAuthSimple(login, password string) func(next http.Handler) http.Handler {
+	return BasicAuth("Restricted", map[string]string{
+		login: password,
+	})
+}
+
+func basicAuthFailed(w http.ResponseWriter, realm string) {
+	w.Header().Add("WWW-Authenticate", fmt.Sprintf(`Basic realm="%s"`, realm))
+	w.WriteHeader(http.StatusUnauthorized)
+}
+
+func BasicAuth(realm string, creds map[string]string) func(next http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			user, pass, ok := r.BasicAuth()
+			if !ok {
+				basicAuthFailed(w, realm)
+				return
+			}
+			credPass, credUserOk := creds[user]
+			if !credUserOk || subtle.ConstantTimeCompare([]byte(pass), []byte(credPass)) != 1 {
+				basicAuthFailed(w, realm)
+				return
+			}
+			ctx := context.WithValue(r.Context(), "user", user)
+			next.ServeHTTP(w, r.WithContext(ctx))
+		})
 	}
 }
 
